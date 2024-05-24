@@ -15,7 +15,7 @@ INCLUDE Irvine32.inc
 ; x = 1
 ; x = -4
 a REAL4 1.0
-b REAL4 3.0
+b REAL4 4.0
 cc REAL4 -4.0
 x1 REAL4 ?
 x2 REAL4 ?
@@ -42,9 +42,10 @@ fsqrt
 fst discriminant
 
 fcom zero
+
 fnstsw ax
 sahf
-jbe negative
+jb negative
 je identity
 positive:
 mov edx,OFFSET message1
@@ -74,15 +75,22 @@ fdiv
 fst x2
 call WriteFloat
 
-
-
-
-
-
 jmp theend
 identity:
 mov edx,OFFSET message2
 call WriteString
+
+; Calculate the root
+fld b
+fchs
+fld a
+fadd a
+fdiv
+fst x1
+mov edx,OFFSET message4
+call WriteString
+call WriteFloat
+
 
 jmp theend
 negative:
